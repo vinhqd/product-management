@@ -32,6 +32,8 @@ public class UserEntity extends BaseEntity {
 
     private String photo;
 
+    private int status;
+
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "roleid"))
     private List<RoleEntity> roles = new ArrayList<>();
