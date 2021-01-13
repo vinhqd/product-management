@@ -1,22 +1,17 @@
 package com.vinhqd.app.controller.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vinhqd.app.dto.UserDTO;
-import com.vinhqd.app.utils.JsonParserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller(value = "homeControllerOfWeb")
 public class HomeController {
 
     @Autowired
-    private JsonParserUtils jsonParserUtils;
+    private
 
     @GetMapping("/")
     public String homePage() {
@@ -26,6 +21,12 @@ public class HomeController {
     @GetMapping("/login")
     public String loginPage(@ModelAttribute("user") UserDTO user) {
         return "auth/login";
+    }
+
+    @PostMapping("/register")
+    public String registry(UserDTO userDTO) {
+
+        return "redirect:/login";
     }
 
 }

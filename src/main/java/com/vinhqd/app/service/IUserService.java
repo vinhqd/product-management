@@ -1,4 +1,9 @@
 package com.vinhqd.app.service;
 
-public class IUserService {
+import com.vinhqd.app.dto.UserDTO;
+
+public interface IUserService {
+
+    UserDTO findUserByUserName(String userName);
+
 }
