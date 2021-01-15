@@ -15,7 +15,7 @@
                                                )}">
 
 <head>
-    <title>Thể loại</title>
+    <title>Thương hiệu</title>
 
     <th:block id="home-static-resources">
         <!-- DataTables -->
@@ -45,12 +45,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Thể loại</h1>
+                        <h1 class="m-0">Thương hiệu</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Danh sách thể loại</li>
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                            <li class="breadcrumb-item active">Danh sách thương hiệu</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -64,12 +64,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="text-right" style="margin-bottom: 8px">
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
+                            <button type="button" class="btn btn-outline-primary" id="btnAdd">
                                 <i class="fas fa-plus-circle"></i>
                             </button>
-                            <a href="" id="btnDelete" class='btn btn-outline-danger'>
+                            <button id="btnDelete" class='btn btn-outline-danger'>
                                 <i class="far fa-trash-alt"></i>
-                            </a>
+                            </button>
                         </div>
                         <div class="card">
                             <div class="card-header">
@@ -106,17 +106,18 @@
         </section>
         <!-- /.content -->
 
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Thêm mới thể loại</h5>
+                        <h5 class="modal-title" id="modalLabel">Thêm mới thương hiêu</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form th:action="@{/admin/category/addNew}" method="POST">
+                        <form th:action="@{/admin/brand/edit}" method="POST">
+                            <input type="hidden" class="form-control" id="id" name="id">
                             <div class="form-group">
                                 <label for="name" class="col-form-label">Tên:</label>
                                 <input type="text" class="form-control" id="name" name="name">
@@ -127,37 +128,6 @@
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary" value="Thêm mới" />
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="">Sửa thể loại</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form th:action="@{/admin/category/edit}" method="PUT">
-                            <input type="hidden" class="form-control" id="idEdit" name="id">
-                            <div class="form-group">
-                                <label for="nameEdit" class="col-form-label">Tên:</label>
-                                <input type="text" class="form-control" id="nameEdit" name="name">
-                            </div>
-                            <div class="form-group">
-                                <label for="codeEdit" class="col-form-label">Code:</label>
-                                <input type="text" class="form-control" id="codeEdit" name="code">
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-primary" value="Sửa" />
                             </div>
                         </form>
                     </div>
@@ -233,7 +203,7 @@
     <script th:src="@{/admin/plugins/datatables-buttons/js/buttons.print.min.js}"></script>
     <script th:src="@{/admin/plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
     <script>
-        let data = JSON.parse("[[${categories}]]".replace(/&quot;/g, '"'));
+        let data = JSON.parse("[[${brands}]]".replace(/&quot;/g, '"'));
         $(document).ready(function() {
             var table = $('#example').DataTable({
                 data: data,
@@ -270,8 +240,8 @@
                         'searchable':false,
                         'orderable':false,
                         'render': function (data, type, full, meta) {
-                            return `<a href='/admin/category/findById/?id=${full.id}' id="btnEdit" class='btn btn-outline-info'>Edit</a>
-                                    <a href='/admin/category/delete/?ids=${full.id}' id="btnDeleteRecord" class='btn btn-outline-danger'>Delete</a>`;
+                            return `<a href='/admin/brand/findById/?id=${full.id}' id="btnEdit" class='btn btn-outline-info'>Edit</a>
+                                    <a href='/admin/brand/delete/?ids=${full.id}' id="btnDeleteRecord" class='btn btn-outline-danger'>Delete</a>`;
                         }
                     }
                 ],
@@ -299,8 +269,7 @@
                 }
             });
 
-            $('#btnDelete').on('click', function(e){
-                e.preventDefault();
+            $('#btnDelete').on('click', function(e) {
                 let ids = [];
                 // Iterate over all checkboxes in the table
                 table.$('input[type="checkbox"]').each(function () {
@@ -309,19 +278,18 @@
                         ids.push(this.value);
                     }
                 });
-                $(this).attr("href", `/admin/category/delete/?ids=${ids}`)
-                var href = $(this).attr('href');
-                $('#confirmDeteleButton').attr('href', href);
                 if (ids.length > 0) {
+                    let href = `/admin/brand/delete/?ids=${ids}`;
+                    $('#confirmDeteleButton').attr('href', href);
                     $('#deleteModal').modal();
                 } else {
                     $('#deleteModal1').modal();
                 }
-
             });
+
         });
     </script>
-    <script th:src="@{/admin/scripts/category.js}"></script>
+    <script th:src="@{/admin/scripts/brand.js}"></script>
 </th:block>
 </body>
 </html>

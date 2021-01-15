@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
         http.authorizeRequests()
-                .antMatchers("/admin**").access("hasAnyRole('ADMIN')")
+                .antMatchers("/admin/**").access("hasAnyRole('ADMIN')")
                 .antMatchers("/**").permitAll();
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/login?accessDenied");
         http.authorizeRequests().and().formLogin()
