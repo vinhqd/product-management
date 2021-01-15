@@ -6,4 +6,6 @@ public interface IUserService {
 
     UserDTO findUserByUserName(String userName);
 
+    UserDTO save(UserDTO userDTO);
+
 }
