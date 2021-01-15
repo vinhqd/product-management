@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<!--th:fragment="main-fragment (title, otherStaticResources,-->
+<!--mainHeader, mainSidebar, mainContent, mainFooter, controlSidebar, otherScripts)">-->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/admin-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #main-header},
+                                                ~{:: #main-sidebar},
+                                                ~{:: #main-content},
+                                                ~{:: #main-footer},
+                                                ~{:: #control-sidebar},
+                                                ~{:: #home-scripts}
+                                               )}">
+
+<head>
+    <title>Quản trị</title>
+
+    <th:block id="home-static-resources">
+        <!-- DataTables -->
+        <link rel="stylesheet" th:href="@{/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+        <link rel="stylesheet" th:href="@{/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+        <link rel="stylesheet" th:href="@{/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css}">
+    </th:block>
+
+</head>
+<body>
+
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <th:block id="main-header" th:replace="~{/fragments/admin-fragment :: main-header}">
+    </th:block>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <th:block id="main-sidebar" th:replace="~{/fragments/admin-fragment :: main-sidebar}">
+    </th:block>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div id="main-content" class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Thể loại</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Danh sách thể loại</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-right" style="margin-bottom: 8px">
+                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
+                                <i class="fas fa-plus-circle"></i>
+                            </button>
+                            <a href="" id="btnDelete" class='btn btn-outline-danger'>
+                                <i class="far fa-trash-alt"></i>
+                            </a>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Danh sách thể loại</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example" class="display table table-bordered table-striped" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
+                                        <th>Tên thể loại</th>
+                                        <th>#</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th>Tên thể loại</th>
+                                        <th>#</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Thêm mới thể loại</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/admin/category/addNew}" method="POST">
+                            <div class="form-group">
+                                <label for="name" class="col-form-label">Tên:</label>
+                                <input type="text" class="form-control" id="name" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="code" class="col-form-label">Code:</label>
+                                <input type="text" class="form-control" id="code" name="code">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary" value="Thêm mới" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="">Sửa thể loại</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/admin/category/edit}" method="PUT">
+                            <input type="hidden" class="form-control" id="idEdit" name="id">
+                            <div class="form-group">
+                                <label for="nameEdit" class="col-form-label">Tên:</label>
+                                <input type="text" class="form-control" id="nameEdit" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="codeEdit" class="col-form-label">Code:</label>
+                                <input type="text" class="form-control" id="codeEdit" name="code">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary" value="Sửa" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want delete this record?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="" id="confirmDeteleButton" class="btn btn-primary">Yes, Delete</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    <!-- /.content-wrapper -->
+
+    <th:block id="main-footer" th:replace="~{/fragments/admin-fragment :: main-footer}">
+    </th:block>
+
+    <!-- Control Sidebar -->
+    <th:block id="control-sidebar" th:replace="~{/fragments/admin-fragment :: control-sidebar}">
+    </th:block>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<th:block id="home-scripts">
+    <!-- DataTables  & Plugins -->
+    <script th:src="@{/admin/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+    <script th:src="@{/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+    <script th:src="@{/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+    <script th:src="@{/admin/plugins/jszip/jszip.min.js}"></script>
+    <script th:src="@{/admin/plugins/pdfmake/pdfmake.min.js}"></script>
+    <script th:src="@{/admin/plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
+    <script th:src="@{/admin/plugins/datatables-buttons/js/buttons.print.min.js}"></script>
+    <script th:src="@{/admin/plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
+    <script>
+        let data = JSON.parse("[[${categories}]]".replace(/&quot;/g, '"'));
+        $(document).ready(function() {
+            var table = $('#example').DataTable({
+                data: data,
+                columns: [
+                    {"": "???"},
+                    {data: "name"},
+                    {"": "???"},
+                ],
+                "oLanguage": {
+                    "sZeroRecords": "Không tìm thấy.",
+                    "sLengthMenu": "Hiển thị _MENU_ thể loại",
+                    "sSearch": "Tìm kiếm: "
+                },
+                "language": {
+                    "info": "Hiển thị _START_ đến _END_ trong _TOTAL_ thể loại",
+                    "infoEmpty":      "Hiển thị 0 đến 0 trong 0 thể loại",
+                    "infoFiltered":   "(Tìm kiếm trong _MAX_ thể loại)",
+                    "emptyTable":     "Không có thể loại nào",
+                },
+                "lengthMenu": [10, 25, 50],
+                'columnDefs': [{
+                    'targets': 0,
+                    'searchable':false,
+                    'orderable':false,
+                    "data": data.id,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta){
+                        return '<input type="checkbox" name=id[] value="'
+                            + $('<div/>').text(full.id).html() + '">';}
+                },
+                    {
+                        "targets": 2,
+                        "data": data,
+                        'searchable':false,
+                        'orderable':false,
+                        'render': function (data, type, full, meta) {
+                            return `<a href='/admin/category/findById/?id=${full.id}' id="btnEdit" class='btn btn-outline-info'>Edit</a>
+                                    <a href='/admin/category/delete/?ids=${full.id}' id="btnDeleteRecord" class='btn btn-outline-danger'>Delete</a>`;
+                        }
+                    }
+                ],
+                'order': [1, 'asc']
+            });
+
+            // Handle click on "Select all" control
+            $('#example-select-all').on('click', function(){
+                // Check/uncheck all checkboxes in the table
+                var rows = table.rows({ 'page': 'applied' }).nodes();
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+            });
+
+            // Handle click on checkbox to set state of "Select all" control
+            $('#example tbody').on('change', 'input[type="checkbox"]', function(){
+                // If checkbox is not checked
+                if(!this.checked){
+                    var el = $('#example-select-all').get(0);
+                    // If "Select all" control is checked and has 'indeterminate' property
+                    if(el && el.checked && ('indeterminate' in el)){
+                        // Set visual state of "Select all" control
+                        // as 'indeterminate'
+                        el.indeterminate = true;
+                    }
+                }
+            });
+
+            $('#btnDelete').on('click', function(e){
+                e.preventDefault();
+                let ids = [];
+                // Iterate over all checkboxes in the table
+                table.$('input[type="checkbox"]').each(function () {
+                    if (this.checked) {
+                        // Create a hidden element
+                        ids.push(this.value);
+                    }
+                });
+                $(this).attr("href", `/admin/category/delete/?ids=${ids}`)
+                var href = $(this).attr('href');
+                $('#confirmDeteleButton').attr('href', href);
+                $('#deleteModal').modal();
+
+            });
+        });
+    </script>
+    <script th:src="@{/admin/scripts/category.js}"></script>
+</th:block>
+</body>
+</html>

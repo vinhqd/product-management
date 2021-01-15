@@ -1,0 +1,9 @@
+package com.vinhqd.app.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "product")
+public class ProductEntity extends BaseEntity {
+}
