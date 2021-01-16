@@ -1,12 +1,10 @@
 package com.vinhqd.app.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "category")
@@ -20,5 +18,10 @@ public class CategoryEntity extends BaseEntity {
     @Column(name = "nameunsigned")
     private String nameUnsigned;
     private String code;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<ProductEntity> products = new ArrayList<>();
 
 }
