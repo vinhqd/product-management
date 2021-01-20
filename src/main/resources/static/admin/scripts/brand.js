@@ -1,4 +1,6 @@
 $(document).ready(function() {
+   $("#products").addClass("menu-open");
+   $("#productsMenu").addClass("active");
    $("#brand").addClass("active");
 
    $("#btnAdd").on('click', function (e) {

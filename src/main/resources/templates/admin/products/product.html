@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<!--th:fragment="main-fragment (title, otherStaticResources,-->
+<!--mainHeader, mainSidebar, mainContent, mainFooter, controlSidebar, otherScripts)">-->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/admin-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #main-header},
+                                                ~{:: #main-sidebar},
+                                                ~{:: #main-content},
+                                                ~{:: #main-footer},
+                                                ~{:: #control-sidebar},
+                                                ~{:: #home-scripts}
+                                               )}">
+
+<head>
+    <title>Sản phẩm</title>
+
+    <th:block id="home-static-resources">
+    </th:block>
+
+</head>
+<body>
+
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <th:block id="main-header" th:replace="~{/fragments/admin-fragment :: main-header}">
+    </th:block>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <th:block id="main-sidebar" th:replace="~{/fragments/admin-fragment :: main-sidebar}">
+    </th:block>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div id="main-content" class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Sản phẩm</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                            <li class="breadcrumb-item active">Danh sách sản phẩm</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-right" style="margin-bottom: 8px">
+                            <a th:href="@{/admin/product/edit}" class="btn btn-outline-primary">
+                                <i class="fas fa-plus-circle"></i>
+                            </a>
+                            <a href="" id="btnDelete" class='btn btn-outline-danger'>
+                                <i class="far fa-trash-alt"></i>
+                            </a>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Danh sách sản phẩm</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                               <!-- table -->
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Thương hiệu</th>
+                                        <th scope="col">Thê loại</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="product: ${products}">
+                                        <th scope="row">1</th>
+                                        <td th:text="${product.title}"></td>
+                                        <td th:text="${product.brandName}"></td>
+                                        <td th:text="${product.categoryName}">@</td>
+                                        <td>
+                                            <a th:href="@{/admin/product/edit/(id = ${product.id})}" class="btn btn-outline-primary"><i class="far fa-edit"></i></a>
+                                            <a href="#" class="btn btn-outline-info"><i class="fas fa-book"></i></i></a>
+                                            <a href="#" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></i></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+
+        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want delete this record?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="" id="confirmDeteleButton" class="btn btn-primary">Yes, Delete</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="deleteModal1" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Chưa chọn item để xoá.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    <!-- /.content-wrapper -->
+
+    <th:block id="main-footer" th:replace="~{/fragments/admin-fragment :: main-footer}">
+    </th:block>
+
+    <!-- Control Sidebar -->
+    <th:block id="control-sidebar" th:replace="~{/fragments/admin-fragment :: control-sidebar}">
+    </th:block>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<th:block id="home-scripts">
+    <script th:src="@{/admin/scripts/product.js}"></script>
+</th:block>
+</body>
+</html>

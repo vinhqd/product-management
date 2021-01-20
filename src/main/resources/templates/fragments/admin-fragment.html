@@ -180,21 +180,34 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a id="category" th:href="@{/admin/category}" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                <li id="products" class="nav-item">
+                    <a id="productsMenu" href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            Thể loại
+                            Quản lý sản phẩm
+                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a id="brand" th:href="@{/admin/brand}" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Thương hiệu
-                        </p>
-                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a id="brand" th:href="@{/admin/brand}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách thương hiệu</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="category" th:href="@{/admin/category}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách thẻ loại</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="product" th:href="@{/admin/product}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách sản phẩm</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

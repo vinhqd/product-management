@@ -12,6 +12,7 @@ import javax.persistence.*;
 public class ProductEntity extends BaseEntity {
 
     private String title;
+    private String titleUnsigned;
     private String description;
     private double price;
     private String thumbnail;

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<!--th:fragment="main-fragment (title, otherStaticResources,-->
+<!--mainHeader, mainSidebar, mainContent, mainFooter, controlSidebar, otherScripts)">-->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/admin-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #main-header},
+                                                ~{:: #main-sidebar},
+                                                ~{:: #main-content},
+                                                ~{:: #main-footer},
+                                                ~{:: #control-sidebar},
+                                                ~{:: #home-scripts}
+                                               )}">
+
+<head>
+    <title>Sản phẩm</title>
+
+    <th:block id="home-static-resources">
+    </th:block>
+
+</head>
+<body>
+
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <th:block id="main-header" th:replace="~{/fragments/admin-fragment :: main-header}">
+    </th:block>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <th:block id="main-sidebar" th:replace="~{/fragments/admin-fragment :: main-sidebar}">
+    </th:block>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div id="main-content" class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Sản phẩm</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/admin/product}">Danh sách sản phẩm</a></li>
+                            <li th:if="${product.id == null}" class="breadcrumb-item active">Thêm mới sản phẩm</li>
+                            <li th:unless="${product.id == null}" class="breadcrumb-item active">Sửa sản phẩm</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-right" style="margin-bottom: 8px">
+                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
+                                <i class="fas fa-plus-circle"></i>
+                            </button>
+                            <a href="" id="btnDelete" class='btn btn-outline-danger'>
+                                <i class="far fa-trash-alt"></i>
+                            </a>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 th:if="${product.id == null}" class="card-title">Thêm mới sản phẩm</h3>
+                                <h3 th:unless="${product.id == null}" class="card-title">Sửa sản phẩm</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                               <!-- table -->
+                                <form th:action="@{/admin/product/edit}" method="POST" th:object="${product}">
+                                    <div class="form-group w-25">
+                                        <label id="brandCode">Thương hiệu</label>
+                                        <select class="custom-select" th:field="*{brandCode}" th:value="*{brandCode}">
+                                            <option value="" selected>Choose...</option>
+                                            <option th:each="item: ${brands}" th:value="${item.code}" th:text="${item.name}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group w-25">
+                                        <label id="categoryCode">Thể loại</label>
+                                        <select class="custom-select" th:field="*{categoryCode}" th:value="*{categoryCode}">
+                                            <option value="" selected>Choose...</option>
+                                            <option th:each="item: ${categories}" th:value="${item.code}" th:text="${item.name}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="title">Title</label>
+                                        <input type="text" class="form-control" placeholder="Tiêu đề" th:field="*{title}" th:value="*{title}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="description">Miêu tả</label>
+                                        <input type="text" class="form-control" placeholder="Miêu tả sản phẩm" th:field="*{description}" th:value="*{description}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="price">Title</label>
+                                        <input type="text" class="form-control" placeholder="Giá săn phẩm" th:field="*{price}" th:value="*{price}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="thumbnail">Thumbnail</label>
+                                        <input type="file" class="form-control-file" th:field="*{thumbnail}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+
+        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want delete this record?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="" id="confirmDeteleButton" class="btn btn-primary">Yes, Delete</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="deleteModal1" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Chưa chọn item để xoá.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    <!-- /.content-wrapper -->
+
+    <th:block id="main-footer" th:replace="~{/fragments/admin-fragment :: main-footer}">
+    </th:block>
+
+    <!-- Control Sidebar -->
+    <th:block id="control-sidebar" th:replace="~{/fragments/admin-fragment :: control-sidebar}">
+    </th:block>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<th:block id="home-scripts">
+    <script th:src="@{/admin/scripts/product.js}"></script>
+</th:block>
+</body>
+</html>

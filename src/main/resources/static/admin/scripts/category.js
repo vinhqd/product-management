@@ -1,4 +1,6 @@
 $(document).ready(function() {
+   $("#products").addClass("menu-open");
+   $("#productsMenu").addClass("active");
    $("#category").addClass("active");
 
    $("table #btnEdit").on("click", function(e) {
